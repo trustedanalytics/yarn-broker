@@ -30,7 +30,7 @@ Broker configuration params list (environment properties):
   * KRB_REALM - kerberos realm name
 * optional :
   * BASE_GUID - base id for catalog plan creation (uuid)
-  * HADOOP_PROVIDED_PARAMS - list of hadoop configuration parameters exposed by service (json format, default: {})
+  * HADOOP_PROVIDED_PARAMS - list of yarn configuration parameters exposed by service (json format, default: {})
   * CF_CATALOG_SERVICENAME - service name in cloud foundry catalog (default: yarn)
   * CF_CATALOG_SERVICEID - service id in cloud foundry catalog (default: yarn)
   * YARNBRK_SPACE: - (default: /yarnbrk_space)
