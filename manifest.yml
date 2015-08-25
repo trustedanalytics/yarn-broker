@@ -1,0 +1,16 @@
+applications:
+- name: yarn-broker
+  memory: 512M
+  instances: 1
+  host: yarn-broker
+  path: target/yarn-broker-0.4.2-SNAPSHOT.jar
+  services: 
+  - zookeeper-inst
+  env:
+    HADOOP_PROVIDED_PARAMS: "placeholder"
+    USER_PASSWORD: "placeholder"
+    KRB_KDC_HOST: "placeholder"
+    KRB_REALM: "placeholder"
+    BASE_GUID: "placeholder"
+    YARNBRK_SPACE: "placeholder"
+    IMAGE_URL: "placeholder"
