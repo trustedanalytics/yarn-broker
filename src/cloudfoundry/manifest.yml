@@ -5,7 +5,7 @@ applications:
   host: yarn-broker
   path: target/yarn-broker-${version}.jar
   services: 
-  - zookeeper-inst
+  - zookeeper-for-yarn
   env:
     HADOOP_PROVIDED_PARAMS: "placeholder"
     USER_PASSWORD: "placeholder"
