@@ -27,3 +27,6 @@ hs_err_pid*
 # intellij configuration files
 .idea/
 *.iml
+
+# generated resources
+manifest.yml
