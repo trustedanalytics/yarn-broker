@@ -42,7 +42,9 @@
                     <includes>
                         <include>src/**/*.java</include>
                     </includes>
-
+                    <excludes>
+                        <exclude>src/main/java/org/trustedanalytics/servicebroker/yarn/config/BrokerConfig.java</exclude>
+                    </excludes>
                     <mapping>
                         <java>regex_header_pattern_style</java>
                     </mapping>
