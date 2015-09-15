@@ -17,11 +17,9 @@
 package org.trustedanalytics.servicebroker.yarn.config;
 
 import com.google.common.collect.ImmutableMap;
-import org.trustedanalytics.hadoop.HadoopConfigurationHelper;
 import org.trustedanalytics.cfbroker.store.api.BrokerStore;
 import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceBindingServiceStore;
-import org.trustedanalytics.hadoop.HadoopConfigurationHelper;
-import org.trustedanalytics.hadoop.config.ConfigConstants;
+import org.trustedanalytics.hadoop.config.*;
 import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceBindingService;
 import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
@@ -32,9 +30,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 @Configuration
 public class ServiceInstanceBindingServiceConfig {
@@ -55,16 +51,19 @@ public class ServiceInstanceBindingServiceConfig {
     }
 
     private Map<String, Object> getCredentials() throws IOException {
-
-        Optional<Map<String, String>> hadoopConf =
-                HadoopConfigurationHelper.getHadoopConfFromJson(configuration.getYarnProvidedParams());
+        ConfigurationHelper confHelper = ConfigurationHelperImpl.getInstance();
+        Map<String, String> configParams = confHelper.getConfigurationFromJson(
+                configuration.getYarnProvidedParams(),
+                ConfigurationLocator.HADOOP);
 
         return ImmutableMap.of(
                 "kerberos", ImmutableMap.of(
-                        "kerberos", ImmutableMap.of("kdc", configuration.getKerberosKdc(),
-                        "krealm", configuration.getKerberosRealm()),
-                        ConfigConstants.HADOOP_CONFIG_KEY_VALUE,
-                        ImmutableMap.copyOf(hadoopConf.orElse(Collections.emptyMap()))
-                ));
+                        "kdc", confHelper.getPropertyFromEnv(PropertyLocator.KRB_KDC)
+                                .orElse(""),
+                        "krealm", confHelper.getPropertyFromEnv(PropertyLocator.KRB_REALM)
+                                .orElse("")),
+                ConfigConstants.HADOOP_CONFIG_KEY_VALUE,
+                    ImmutableMap.copyOf(configParams)
+                );
     }
 }

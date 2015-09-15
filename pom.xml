@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>yarn-broker</artifactId>
 
-    <version>0.4.5</version>
+    <version>0.5.0</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.trustedanalytics</groupId>
             <artifactId>hadoop-utils</artifactId>
-            <version>0.4.3</version>
+            <version>0.4.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

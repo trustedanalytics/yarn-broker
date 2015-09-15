@@ -36,28 +36,8 @@ public class ExternalConfiguration {
     @NotNull
     private String cfServiceName;
 
-    @Value("${broker.store.node}")
-    @NotNull
-    private String brokerStoreNode;
-
-    @Value("${yarn.brokerusername}")
-    @NotNull
-    private String zkBrokerUserName;
-
-    @Value("${yarn.brokeruserpass}")
-    @NotNull
-    private String zkBrokerUserPass;
-
     @Value("${yarn.provided.params}")
     private String yarnProvidedParams;
-
-    @Value("${kerberos.kdc}")
-    @NotNull
-    private String kerberosKdc;
-
-    @Value("${kerberos.realm}")
-    @NotNull
-    private String kerberosRealm;
 
     @Value("${cf.baseId}")
     @NotNull
@@ -85,46 +65,6 @@ public class ExternalConfiguration {
 
     public void setYarnProvidedParams(String yarnProvidedParams) {
         this.yarnProvidedParams = yarnProvidedParams;
-    }
-
-    public String getZkBrokerUserName() {
-        return zkBrokerUserName;
-    }
-
-    public void setZkBrokerUserName(String zkBrokerUserName) {
-        this.zkBrokerUserName = zkBrokerUserName;
-    }
-
-    public String getZkBrokerUserPass() {
-        return zkBrokerUserPass;
-    }
-
-    public void setZkBrokerUserPass(String zkBrokerUserPass) {
-        this.zkBrokerUserPass = zkBrokerUserPass;
-    }
-
-    public String getBrokerStoreNode() {
-        return brokerStoreNode;
-    }
-
-    public void setBrokerStoreNode(String brokerStoreNode) {
-        this.brokerStoreNode = brokerStoreNode;
-    }
-
-    public String getKerberosKdc() {
-        return kerberosKdc;
-    }
-
-    public void setKerberosKdc(String kerberosKdc) {
-        this.kerberosKdc = kerberosKdc;
-    }
-
-    public String getKerberosRealm() {
-        return kerberosRealm;
-    }
-
-    public void setKerberosRealm(String kerberosRealm) {
-        this.kerberosRealm = kerberosRealm;
     }
 
     public String getImageUrl() {

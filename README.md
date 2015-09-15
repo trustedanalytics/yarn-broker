@@ -17,6 +17,9 @@ Push broker binary code to cloud foundry (use cf client).:
 cf push yarn-broker -p target/yarn-broker-*.jar -m 512M -i 1 --no-start
 ```
 
+## Kerberos configuration
+Broker should be bind to existing kerberos provided service. This will provide default kerberos configuration, for REALM and KDC host.
+
 ## Configure
 
 For strict separation of config from code (twelve-factor principle), configuration must be placed in environment variables.
@@ -25,21 +28,12 @@ Broker configuration params list (environment properties):
 
 * obligatory :
   * USER_PASSWORD - password to interact with service broker
-* obligatory only when zookeeper requires kerberos authentication:
-  * KRB_KDC_HOST - kerberos kdc host address
-  * KRB_REALM - kerberos realm name
 * optional :
   * BASE_GUID - base id for catalog plan creation (uuid)
   * HADOOP_PROVIDED_PARAMS - list of yarn configuration parameters exposed by service (json format, default: {})
   * CF_CATALOG_SERVICENAME - service name in cloud foundry catalog (default: yarn)
   * CF_CATALOG_SERVICEID - service id in cloud foundry catalog (default: yarn)
   * YARNBRK_SPACE: - (default: /yarnbrk_space)
-
-When zookeeper requires kerberos authentication set:
-```
-cf se yarn-broker KRB_KDC_HOST ip-10-10-9-198.us-west-2.compute.internal
-cf se yarn-broker KRB_REALM US-WEST-2.COMPUTE.INTERNAL
-```
 
 ## Injection of Yarn configuration
 YARN configuration must be set via HADOOP_PROVIDED_PARAMS environment variable. Description of this process is this same as in HDFS broker case ( https://github.com/trustedanalytics/hdfs-broker/ ).

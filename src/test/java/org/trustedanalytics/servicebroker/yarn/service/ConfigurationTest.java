@@ -33,6 +33,10 @@ import java.io.IOException;
 @Profile("test")
 public class ConfigurationTest {
 
+    private final String USER = "cf";
+    private final String PASSWORD = "cf1";
+    private final String ZNODE = "/node";
+
     @Autowired
     private ExternalConfiguration conf;
 
@@ -43,9 +47,9 @@ public class ConfigurationTest {
 
         YarnTestUtils.ZookeeperCredentials credendials =
                 new YarnTestUtils.ZookeeperCredentials(zkServer.getConnectString(),
-                        conf.getZkBrokerUserName(),
-                        conf.getZkBrokerUserPass());
-        YarnTestUtils.createDir(credendials, conf.getBrokerStoreNode());
+                        USER,
+                        PASSWORD);
+        YarnTestUtils.createDir(credendials, ZNODE);
         return zkServer;
     }
 
@@ -53,9 +57,9 @@ public class ConfigurationTest {
     public ZookeeperClient getZkClient(TestingServer zkServer) throws IOException {
         ZookeeperClient client =
                 new ZookeeperClientBuilder(zkServer.getConnectString(),
-                        conf.getZkBrokerUserName(),
-                        conf.getZkBrokerUserPass(),
-                        conf.getBrokerStoreNode()).build();
+                        USER,
+                        PASSWORD,
+                        ZNODE).build();
         return client;
     }
 }

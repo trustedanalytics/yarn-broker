@@ -44,6 +44,8 @@ public class BrokerStoreConfig {
 
     private FactoryHelper helper;
 
+    private ConfigurationHelper confHelper;
+
     @Autowired
     @Qualifier(Qualifiers.SERVICE_INSTANCE)
     private RepositorySerializer<ServiceInstance> instanceSerializer;
@@ -62,11 +64,13 @@ public class BrokerStoreConfig {
 
     public BrokerStoreConfig() {
         this.helper = new FactoryHelper();
+        this.confHelper = ConfigurationHelperImpl.getInstance();
     }
 
     BrokerStoreConfig(ExternalConfiguration config, FactoryHelper helper) {
         this.config = config;
         this.helper = helper;
+        this.confHelper = ConfigurationHelperImpl.getInstance();
     }
 
     @Bean
@@ -90,18 +94,18 @@ public class BrokerStoreConfig {
     @Bean
     @Profile("cloud")
     public ZookeeperClient getZKClient() throws  IOException {
-        ZookeeperClient zkClient = helper.getZkClientInstance(getZookeperUriFromCredentials(),
-                config.getZkBrokerUserName(),
-                config.getZkBrokerUserPass(),
-                config.getBrokerStoreNode());
+        ZookeeperClient zkClient = helper.getZkClientInstance(
+                getPropertyFromCredentials(PropertyLocator.ZOOKEPER_URI),
+                getPropertyFromCredentials(PropertyLocator.USER),
+                getPropertyFromCredentials(PropertyLocator.PASSWORD),
+                getPropertyFromCredentials(PropertyLocator.ZOOKEPER_ZNODE));
         zkClient.init();
         return zkClient;
     }
 
-    private String getZookeperUriFromCredentials() throws IOException{
-        ConfigurationHelper confHelper = ConfigurationHelperImpl.getInstance();
-        return confHelper.getPropertyFromEnv(PropertyLocator.ZOOKEPER_URI)
-                .orElseThrow(() -> new IllegalStateException("ZookepeerUri not found in VCAP_SERVICES"));
+    private String getPropertyFromCredentials(PropertyLocator property) throws IOException{
+        return confHelper.getPropertyFromEnv(property)
+                .orElseThrow(() -> new IllegalStateException(property.name() + " not found in VCAP_SERVICES"));
     }
 
     final static class FactoryHelper {
