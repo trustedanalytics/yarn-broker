@@ -16,6 +16,13 @@
 
 package org.trustedanalytics.servicebroker.yarn.config;
 
+import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.cfbroker.store.api.BrokerStore;
 import org.trustedanalytics.cfbroker.store.serialization.RepositoryDeserializer;
 import org.trustedanalytics.cfbroker.store.serialization.RepositorySerializer;
@@ -25,14 +32,7 @@ import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperStore;
 import org.trustedanalytics.hadoop.config.ConfigurationHelper;
 import org.trustedanalytics.hadoop.config.ConfigurationHelperImpl;
 import org.trustedanalytics.hadoop.config.PropertyLocator;
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.trustedanalytics.servicebroker.yarn.kerberos.KerberosProperties;
 
 import java.io.IOException;
 
@@ -41,6 +41,9 @@ public class BrokerStoreConfig {
 
     @Autowired
     private ExternalConfiguration config;
+
+    @Autowired
+    private KerberosProperties kerberosProperties;
 
     private FactoryHelper helper;
 
@@ -76,9 +79,9 @@ public class BrokerStoreConfig {
     @Bean
     @Qualifier(Qualifiers.SERVICE_INSTANCE)
     public BrokerStore<ServiceInstance> getServiceInstanceStore(ZookeeperClient zkClient)
-            throws IOException {
+        throws IOException {
         BrokerStore<ServiceInstance> brokerStore =
-                new ZookeeperStore<>(zkClient, instanceSerializer, instanceDeserializer);
+            new ZookeeperStore<>(zkClient, instanceSerializer, instanceDeserializer);
         return brokerStore;
     }
 
@@ -87,33 +90,35 @@ public class BrokerStoreConfig {
     public BrokerStore<CreateServiceInstanceBindingRequest>
     getServiceInstanceBindingStore(ZookeeperClient zkClient) throws IOException {
         BrokerStore<CreateServiceInstanceBindingRequest> brokerStore =
-                new ZookeeperStore<>(zkClient, bindingSerializer, bindingDeserializer);
+            new ZookeeperStore<>(zkClient, bindingSerializer, bindingDeserializer);
         return brokerStore;
     }
 
     @Bean
     @Profile("cloud")
-    public ZookeeperClient getZKClient() throws  IOException {
+    public ZookeeperClient getZKClient() throws IOException {
         ZookeeperClient zkClient = helper.getZkClientInstance(
-                getPropertyFromCredentials(PropertyLocator.ZOOKEPER_URI),
-                getPropertyFromCredentials(PropertyLocator.USER),
-                getPropertyFromCredentials(PropertyLocator.PASSWORD),
-                getPropertyFromCredentials(PropertyLocator.ZOOKEPER_ZNODE));
+            getPropertyFromCredentials(PropertyLocator.ZOOKEPER_URI),
+            kerberosProperties.getUser(),
+            kerberosProperties.getPassword(),
+            getPropertyFromCredentials(PropertyLocator.ZOOKEPER_ZNODE));
         zkClient.init();
         return zkClient;
     }
 
-    private String getPropertyFromCredentials(PropertyLocator property) throws IOException{
+    private String getPropertyFromCredentials(PropertyLocator property) throws IOException {
         return confHelper.getPropertyFromEnv(property)
-                .orElseThrow(() -> new IllegalStateException(property.name() + " not found in VCAP_SERVICES"));
+            .orElseThrow(
+                () -> new IllegalStateException(property.name() + " not found in VCAP_SERVICES"));
     }
 
     final static class FactoryHelper {
         ZookeeperClient getZkClientInstance(String zkCluster,
-                                            String user,
-                                            String pass,
-                                            String zkNode) throws IOException {
-            ZookeeperClient client = new ZookeeperClientBuilder(zkCluster, user, pass, zkNode).build();
+            String user,
+            String pass,
+            String zkNode) throws IOException {
+            ZookeeperClient client =
+                new ZookeeperClientBuilder(zkCluster, user, pass, zkNode).build();
             return client;
         }
     }
