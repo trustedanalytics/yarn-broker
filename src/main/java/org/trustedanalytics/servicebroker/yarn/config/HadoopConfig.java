@@ -16,11 +16,7 @@
 
 package org.trustedanalytics.servicebroker.yarn.config;
 
-import org.trustedanalytics.hadoop.HadoopConfigurationHelper;
-
 import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
 
 import javax.security.auth.login.LoginException;
 
@@ -28,6 +24,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.trustedanalytics.cfbroker.config.HadoopZipConfiguration;
 
 @Profile("cloud")
 @org.springframework.context.annotation.Configuration
@@ -38,11 +35,8 @@ public class HadoopConfig {
 
     @Bean
     public Configuration getHadoopConfiguration() throws LoginException, IOException {
-        Configuration hadoopConf = new Configuration(false);
-        Optional<Map<String, String>> hadoopParams =
-                HadoopConfigurationHelper.getHadoopConfFromJson(configuration.getYarnProvidedParams());
-        HadoopConfigurationHelper.mergeConfiguration(hadoopConf, hadoopParams.get());
-        return hadoopConf;
+      return HadoopZipConfiguration.createHadoopZipConfiguration(
+          configuration.getYarnProvidedZip()).getAsHadoopConfiguration();
     }
 }
 

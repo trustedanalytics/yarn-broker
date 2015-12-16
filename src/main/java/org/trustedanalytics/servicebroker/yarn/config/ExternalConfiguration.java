@@ -36,8 +36,8 @@ public class ExternalConfiguration {
     @NotNull
     private String cfServiceName;
 
-    @Value("${yarn.provided.params}")
-    private String yarnProvidedParams;
+    @Value("${yarn.provided.zip}")
+    private String yarnProvidedZip;
 
     @Value("${cf.baseId}")
     @NotNull
@@ -59,14 +59,6 @@ public class ExternalConfiguration {
         this.cfServiceId = cfServiceId;
     }
 
-    public String getYarnProvidedParams() {
-        return yarnProvidedParams;
-    }
-
-    public void setYarnProvidedParams(String yarnProvidedParams) {
-        this.yarnProvidedParams = yarnProvidedParams;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -81,5 +73,13 @@ public class ExternalConfiguration {
 
     public void setCfBaseId(String cfBaseId) {
         this.cfBaseId = cfBaseId;
+    }
+
+    public String getYarnProvidedZip() {
+      return yarnProvidedZip;
+    }
+
+    public void setYarnProvidedZip(String yarnProvidedZip) {
+      this.yarnProvidedZip = yarnProvidedZip;
     }
 }

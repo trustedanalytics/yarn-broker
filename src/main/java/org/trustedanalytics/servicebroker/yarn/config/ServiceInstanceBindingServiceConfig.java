@@ -16,25 +16,22 @@
 
 package org.trustedanalytics.servicebroker.yarn.config;
 
-import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.security.auth.login.LoginException;
+
 import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.trustedanalytics.cfbroker.config.HadoopZipConfiguration;
 import org.trustedanalytics.cfbroker.store.api.BrokerStore;
 import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceBindingServiceStore;
-import org.trustedanalytics.hadoop.config.ConfigConstants;
-import org.trustedanalytics.hadoop.config.ConfigurationHelper;
-import org.trustedanalytics.hadoop.config.ConfigurationHelperImpl;
-import org.trustedanalytics.hadoop.config.ConfigurationLocator;
 import org.trustedanalytics.servicebroker.yarn.kerberos.KerberosProperties;
 import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceBindingService;
-
-import javax.security.auth.login.LoginException;
-import java.io.IOException;
-import java.util.Map;
 
 @Configuration
 public class ServiceInstanceBindingServiceConfig {
@@ -58,17 +55,8 @@ public class ServiceInstanceBindingServiceConfig {
     }
 
     private Map<String, Object> getCredentials() throws IOException {
-        ConfigurationHelper confHelper = ConfigurationHelperImpl.getInstance();
-        Map<String, String> configParams = confHelper.getConfigurationFromJson(
-            configuration.getYarnProvidedParams(),
-            ConfigurationLocator.HADOOP);
-
-        return ImmutableMap.of(
-            "kerberos", ImmutableMap.of(
-                "kdc", kerberosProperties.getKdc(),
-                "krealm", kerberosProperties.getRealm()),
-            ConfigConstants.HADOOP_CONFIG_KEY_VALUE,
-            ImmutableMap.copyOf(configParams)
-        );
+        HadoopZipConfiguration hadoopZipConfiguration =
+            HadoopZipConfiguration.createHadoopZipConfiguration(configuration.getYarnProvidedZip());
+        return hadoopZipConfiguration.getBrokerCredentials();
     }
 }
