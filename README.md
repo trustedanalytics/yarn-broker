@@ -40,13 +40,13 @@ Broker configuration params list (environment properties):
   * USER_PASSWORD - password to interact with service broker
 * optional :
   * BASE_GUID - base id for catalog plan creation (uuid)
-  * HADOOP_PROVIDED_PARAMS - list of yarn configuration parameters exposed by service (json format, default: {})
+  * HADOOP_PROVIDED_ZIP - list of yarn configuration parameters exposed by service (json format, default: {})
   * CF_CATALOG_SERVICENAME - service name in cloud foundry catalog (default: yarn)
   * CF_CATALOG_SERVICEID - service id in cloud foundry catalog (default: yarn)
   * YARNBRK_SPACE: - (default: /yarnbrk_space)
 
 ## Injection of Yarn configuration
-YARN configuration must be set via HADOOP_PROVIDED_PARAMS environment variable. Description of this process is this same as in HDFS broker case ( https://github.com/trustedanalytics/hdfs-broker/ ).
+YARN configuration must be set via HADOOP_PROVIDED_ZIP environment variable. Description of this process is this same as in HDFS broker case ( https://github.com/trustedanalytics/hdfs-broker/ ).
 
 ## Zookeeper configuration
 Broker instance should be bind with zookeeper broker instance to get zookeeper configuration.
@@ -90,6 +90,13 @@ and look for :
   "yarn": [
    {
     "credentials": {
+     "HADOOP_CONFIG_KEY": {
+      <yarn_configuration_json>
+     },
+     "HADOOP_CONFIG_ZIP": {
+      "description": "This is the encoded zip file of hadoop-configuration",
+      "encoded_zip": "<base64 of configuration>"
+     }
      "kerberos": {
       "kdc": "ip-10-10-9-198.us-west-2.compute.internal",
       "krealm": "US-WEST-2.COMPUTE.INTERNAL"
