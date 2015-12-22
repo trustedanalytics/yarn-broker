@@ -32,7 +32,7 @@ public class CatalogConfig {
     @Autowired
     private ExternalConfiguration configuration;
 
-    private String SYSLOG_DRAIN = "syslog_drain";
+    private static final String SYSLOG_DRAIN = "syslog_drain";
 
     private static final String IMAGE_URL = "imageUrl";
 

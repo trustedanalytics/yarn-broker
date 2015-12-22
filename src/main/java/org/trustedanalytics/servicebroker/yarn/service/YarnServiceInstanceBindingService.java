@@ -31,14 +31,11 @@ public class YarnServiceInstanceBindingService extends ForwardingServiceInstance
 
     private final Map<String, Object> credentials;
 
-    private ExternalConfiguration configuration;
-
     public YarnServiceInstanceBindingService(ServiceInstanceBindingService instanceBindingService,
                                              Map<String, Object> credentials,
                                              ExternalConfiguration configuration) {
         super(instanceBindingService);
         this.credentials = credentials;
-        this.configuration = configuration;
     }
 
     @Override
@@ -50,12 +47,12 @@ public class YarnServiceInstanceBindingService extends ForwardingServiceInstance
     private ServiceInstanceBinding withCredentials(ServiceInstanceBinding serviceInstanceBinding) {
         return new ServiceInstanceBinding(serviceInstanceBinding.getId(),
                 serviceInstanceBinding.getServiceInstanceId(),
-                getCredentialsFor(serviceInstanceBinding.getServiceInstanceId()),
+                getCredentialsFor(),
                 serviceInstanceBinding.getSyslogDrainUrl(),
                 serviceInstanceBinding.getAppGuid());
     }
 
-    private Map<String, Object> getCredentialsFor(String serviceInstanceId) {
+    private Map<String, Object> getCredentialsFor() {
         return new HashMap<>(credentials);
     }
 }

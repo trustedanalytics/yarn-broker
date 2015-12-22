@@ -48,7 +48,7 @@ public class ServiceInstanceBindingServiceConfig {
 
     @Bean
     public ServiceInstanceBindingService getServiceInstanceBindingService()
-        throws IllegalArgumentException, IOException, LoginException {
+        throws IOException, LoginException {
 
         return new YarnServiceInstanceBindingService(
             new ServiceInstanceBindingServiceStore(store), getCredentials(), configuration);

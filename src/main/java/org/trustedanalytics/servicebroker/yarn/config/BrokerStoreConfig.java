@@ -40,9 +40,6 @@ import java.io.IOException;
 public class BrokerStoreConfig {
 
     @Autowired
-    private ExternalConfiguration config;
-
-    @Autowired
     private KerberosProperties kerberosProperties;
 
     private FactoryHelper helper;
@@ -70,28 +67,18 @@ public class BrokerStoreConfig {
         this.confHelper = ConfigurationHelperImpl.getInstance();
     }
 
-    BrokerStoreConfig(ExternalConfiguration config, FactoryHelper helper) {
-        this.config = config;
-        this.helper = helper;
-        this.confHelper = ConfigurationHelperImpl.getInstance();
-    }
-
     @Bean
     @Qualifier(Qualifiers.SERVICE_INSTANCE)
     public BrokerStore<ServiceInstance> getServiceInstanceStore(ZookeeperClient zkClient)
         throws IOException {
-        BrokerStore<ServiceInstance> brokerStore =
-            new ZookeeperStore<>(zkClient, instanceSerializer, instanceDeserializer);
-        return brokerStore;
+        return new ZookeeperStore<>(zkClient, instanceSerializer, instanceDeserializer);
     }
 
     @Bean
     @Qualifier(Qualifiers.SERVICE_INSTANCE_BINDING)
     public BrokerStore<CreateServiceInstanceBindingRequest>
     getServiceInstanceBindingStore(ZookeeperClient zkClient) throws IOException {
-        BrokerStore<CreateServiceInstanceBindingRequest> brokerStore =
-            new ZookeeperStore<>(zkClient, bindingSerializer, bindingDeserializer);
-        return brokerStore;
+        return new ZookeeperStore<>(zkClient, bindingSerializer, bindingDeserializer);
     }
 
     @Bean
@@ -112,14 +99,12 @@ public class BrokerStoreConfig {
                 () -> new IllegalStateException(property.name() + " not found in VCAP_SERVICES"));
     }
 
-    final static class FactoryHelper {
+    static final class FactoryHelper {
         ZookeeperClient getZkClientInstance(String zkCluster,
             String user,
             String pass,
             String zkNode) throws IOException {
-            ZookeeperClient client =
-                new ZookeeperClientBuilder(zkCluster, user, pass, zkNode).build();
-            return client;
+            return new ZookeeperClientBuilder(zkCluster, user, pass, zkNode).build();
         }
     }
 }

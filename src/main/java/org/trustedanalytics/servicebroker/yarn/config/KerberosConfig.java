@@ -28,7 +28,7 @@ import org.trustedanalytics.servicebroker.yarn.kerberos.KerberosProperties;
 @Configuration
 public class KerberosConfig {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(KerberosConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KerberosConfig.class);
 
     ConfigurationHelper confHelper = ConfigurationHelperImpl.getInstance();
 
@@ -43,7 +43,7 @@ public class KerberosConfig {
     }
 
     String get(PropertyLocator property) {
-        String DEFAULT_VALUE = "";
+        final String DEFAULT_VALUE = "";
         try {
             return confHelper.getPropertyFromEnv(property).orElseGet(() -> {
                 LOGGER.warn(getErrorMsg(property));
