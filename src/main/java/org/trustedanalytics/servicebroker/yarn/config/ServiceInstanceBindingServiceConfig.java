@@ -30,33 +30,33 @@ import org.springframework.context.annotation.Configuration;
 import org.trustedanalytics.cfbroker.config.HadoopZipConfiguration;
 import org.trustedanalytics.cfbroker.store.api.BrokerStore;
 import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceBindingServiceStore;
-import org.trustedanalytics.servicebroker.yarn.kerberos.KerberosProperties;
+import org.trustedanalytics.servicebroker.yarn.config.kerberos.KerberosProperties;
 import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceBindingService;
 
 @Configuration
 public class ServiceInstanceBindingServiceConfig {
 
-    @Autowired
-    private ExternalConfiguration configuration;
+  @Autowired
+  private ExternalConfiguration configuration;
 
-    @Autowired
-    private KerberosProperties kerberosProperties;
+  @Autowired
+  private KerberosProperties kerberosProperties;
 
-    @Autowired
-    @Qualifier(value = Qualifiers.SERVICE_INSTANCE_BINDING)
-    private BrokerStore<CreateServiceInstanceBindingRequest> store;
+  @Autowired
+  @Qualifier(value = Qualifiers.SERVICE_INSTANCE_BINDING)
+  private BrokerStore<CreateServiceInstanceBindingRequest> store;
 
-    @Bean
-    public ServiceInstanceBindingService getServiceInstanceBindingService()
-        throws IOException, LoginException {
+  @Bean
+  public ServiceInstanceBindingService getServiceInstanceBindingService() throws IOException,
+      LoginException {
 
-        return new YarnServiceInstanceBindingService(
-            new ServiceInstanceBindingServiceStore(store), getCredentials(), configuration);
-    }
+    return new YarnServiceInstanceBindingService(new ServiceInstanceBindingServiceStore(store),
+        getCredentials(), configuration);
+  }
 
-    private Map<String, Object> getCredentials() throws IOException {
-        HadoopZipConfiguration hadoopZipConfiguration =
-            HadoopZipConfiguration.createHadoopZipConfiguration(configuration.getYarnProvidedZip());
-        return hadoopZipConfiguration.getBrokerCredentials();
-    }
+  private Map<String, Object> getCredentials() throws IOException {
+    HadoopZipConfiguration hadoopZipConfiguration =
+        HadoopZipConfiguration.createHadoopZipConfiguration(configuration.getYarnProvidedZip());
+    return hadoopZipConfiguration.getBrokerCredentials();
+  }
 }

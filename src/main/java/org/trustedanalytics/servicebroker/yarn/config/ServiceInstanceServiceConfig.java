@@ -16,32 +16,33 @@
 
 package org.trustedanalytics.servicebroker.yarn.config;
 
-import org.trustedanalytics.cfbroker.store.api.BrokerStore;
-import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceServiceStore;
-import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceService;
+import java.io.IOException;
+
+import javax.security.auth.login.LoginException;
+
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.security.auth.login.LoginException;
-import java.io.IOException;
+import org.trustedanalytics.cfbroker.store.api.BrokerStore;
+import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceServiceStore;
+import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceService;
 
 @Configuration
 public class ServiceInstanceServiceConfig {
 
-    @Autowired
-    private ExternalConfiguration configuration;
+  @Autowired
+  private ExternalConfiguration configuration;
 
-    @Autowired
-    @Qualifier(value = Qualifiers.SERVICE_INSTANCE)
-    private BrokerStore<ServiceInstance> store;
+  @Autowired
+  @Qualifier(value = Qualifiers.SERVICE_INSTANCE)
+  private BrokerStore<ServiceInstance> store;
 
-    @Bean
-    public ServiceInstanceService getServiceInstanceService() throws IllegalArgumentException,
-            IOException, LoginException {
-        return new YarnServiceInstanceService(new ServiceInstanceServiceStore(store));
-    }
+  @Bean
+  public ServiceInstanceService getServiceInstanceService() throws IllegalArgumentException,
+      IOException, LoginException {
+    return new YarnServiceInstanceService(new ServiceInstanceServiceStore(store));
+  }
 }

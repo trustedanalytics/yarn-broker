@@ -16,10 +16,10 @@
 
 package org.trustedanalytics.servicebroker.yarn.config;
 
-final class Qualifiers {
+public final class Qualifiers {
 
-    public static final String SERVICE_INSTANCE = "serviceInstance";
-    public static final String SERVICE_INSTANCE_BINDING = "serviceInstanceBinding";
+  public static final String SERVICE_INSTANCE = "serviceInstance";
+  public static final String SERVICE_INSTANCE_BINDING = "serviceInstanceBinding";
 
-    private Qualifiers() {}
+  private Qualifiers() {}
 }

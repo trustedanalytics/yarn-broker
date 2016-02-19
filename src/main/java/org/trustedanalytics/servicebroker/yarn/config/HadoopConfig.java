@@ -26,17 +26,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.cfbroker.config.HadoopZipConfiguration;
 
-@Profile("cloud")
+@Profile(Profiles.CLOUD)
 @org.springframework.context.annotation.Configuration
 public class HadoopConfig {
 
-    @Autowired
-    private ExternalConfiguration configuration;
+  @Autowired
+  private ExternalConfiguration configuration;
 
-    @Bean
-    public Configuration getHadoopConfiguration() throws LoginException, IOException {
-      return HadoopZipConfiguration.createHadoopZipConfiguration(
-          configuration.getYarnProvidedZip()).getAsHadoopConfiguration();
-    }
+  @Bean
+  public Configuration getHadoopConfiguration() throws LoginException, IOException {
+    return HadoopZipConfiguration.createHadoopZipConfiguration(configuration.getYarnProvidedZip())
+        .getAsHadoopConfiguration();
+  }
 }
-

@@ -16,43 +16,41 @@
 
 package org.trustedanalytics.servicebroker.yarn.service;
 
-import org.trustedanalytics.cfbroker.store.impl.ForwardingServiceInstanceBindingServiceStore;
-import org.trustedanalytics.servicebroker.yarn.config.ExternalConfiguration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstanceBinding;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.trustedanalytics.cfbroker.store.impl.ForwardingServiceInstanceBindingServiceStore;
+import org.trustedanalytics.servicebroker.yarn.config.ExternalConfiguration;
 
 public class YarnServiceInstanceBindingService extends ForwardingServiceInstanceBindingServiceStore {
 
-    private final Map<String, Object> credentials;
+  private final Map<String, Object> credentials;
 
-    public YarnServiceInstanceBindingService(ServiceInstanceBindingService instanceBindingService,
-                                             Map<String, Object> credentials,
-                                             ExternalConfiguration configuration) {
-        super(instanceBindingService);
-        this.credentials = credentials;
-    }
+  public YarnServiceInstanceBindingService(ServiceInstanceBindingService instanceBindingService,
+      Map<String, Object> credentials, ExternalConfiguration configuration) {
+    super(instanceBindingService);
+    this.credentials = credentials;
+  }
 
-    @Override
-    public ServiceInstanceBinding createServiceInstanceBinding(CreateServiceInstanceBindingRequest request)
-            throws ServiceInstanceBindingExistsException, ServiceBrokerException {
-        return withCredentials(super.createServiceInstanceBinding(request));
-    }
+  @Override
+  public ServiceInstanceBinding createServiceInstanceBinding(
+      CreateServiceInstanceBindingRequest request) throws ServiceInstanceBindingExistsException,
+      ServiceBrokerException {
+    return withCredentials(super.createServiceInstanceBinding(request));
+  }
 
-    private ServiceInstanceBinding withCredentials(ServiceInstanceBinding serviceInstanceBinding) {
-        return new ServiceInstanceBinding(serviceInstanceBinding.getId(),
-                serviceInstanceBinding.getServiceInstanceId(),
-                getCredentialsFor(),
-                serviceInstanceBinding.getSyslogDrainUrl(),
-                serviceInstanceBinding.getAppGuid());
-    }
+  private ServiceInstanceBinding withCredentials(ServiceInstanceBinding serviceInstanceBinding) {
+    return new ServiceInstanceBinding(serviceInstanceBinding.getId(),
+        serviceInstanceBinding.getServiceInstanceId(), getCredentialsFor(),
+        serviceInstanceBinding.getSyslogDrainUrl(), serviceInstanceBinding.getAppGuid());
+  }
 
-    private Map<String, Object> getCredentialsFor() {
-        return new HashMap<>(credentials);
-    }
+  private Map<String, Object> getCredentialsFor() {
+    return new HashMap<>(credentials);
+  }
 }

@@ -24,62 +24,74 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExternalConfiguration {
 
-    @Value("${metadata.imageUrl}")
-    @NotNull
-    private String imageUrl;
+  @Value("${metadata.imageUrl}")
+  @NotNull
+  private String imageUrl;
 
-    @Value("${cf.serviceid}")
-    @NotNull
-    private String cfServiceId;
+  @Value("${store.path}")
+  @NotNull
+  private String brokerStorePath;
 
-    @Value("${cf.servicename}")
-    @NotNull
-    private String cfServiceName;
+  @Value("${cf.serviceid}")
+  @NotNull
+  private String cfServiceId;
 
-    @Value("${yarn.provided.zip}")
-    private String yarnProvidedZip;
+  @Value("${cf.servicename}")
+  @NotNull
+  private String cfServiceName;
 
-    @Value("${cf.baseId}")
-    @NotNull
-    private String cfBaseId;
+  @Value("${yarn.provided.zip}")
+  private String yarnProvidedZip;
 
-    public String getCfServiceName() {
-        return cfServiceName;
-    }
+  @Value("${cf.baseId}")
+  @NotNull
+  private String cfBaseId;
 
-    public void setCfServiceName(String cfServiceName) {
-        this.cfServiceName = cfServiceName;
-    }
+  public String getCfServiceName() {
+    return cfServiceName;
+  }
 
-    public String getCfServiceId() {
-        return cfServiceId;
-    }
+  public void setCfServiceName(String cfServiceName) {
+    this.cfServiceName = cfServiceName;
+  }
 
-    public void setCfServiceId(String cfServiceId) {
-        this.cfServiceId = cfServiceId;
-    }
+  public String getCfServiceId() {
+    return cfServiceId;
+  }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+  public void setCfServiceId(String cfServiceId) {
+    this.cfServiceId = cfServiceId;
+  }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+  public String getImageUrl() {
+    return imageUrl;
+  }
 
-    public String getCfBaseId() {
-        return cfBaseId;
-    }
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
-    public void setCfBaseId(String cfBaseId) {
-        this.cfBaseId = cfBaseId;
-    }
+  public String getCfBaseId() {
+    return cfBaseId;
+  }
 
-    public String getYarnProvidedZip() {
-      return yarnProvidedZip;
-    }
+  public void setCfBaseId(String cfBaseId) {
+    this.cfBaseId = cfBaseId;
+  }
 
-    public void setYarnProvidedZip(String yarnProvidedZip) {
-      this.yarnProvidedZip = yarnProvidedZip;
-    }
+  public String getYarnProvidedZip() {
+    return yarnProvidedZip;
+  }
+
+  public void setYarnProvidedZip(String yarnProvidedZip) {
+    this.yarnProvidedZip = yarnProvidedZip;
+  }
+
+  public String getBrokerStorePath() {
+    return brokerStorePath;
+  }
+
+  public void setBrokerStorePath(String brokerStorePath) {
+    this.brokerStorePath = brokerStorePath;
+  }
 }

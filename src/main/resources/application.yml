@@ -2,7 +2,11 @@ security:
 #password cf client will use when interacting with broker
   user.password: ${user.password}
 yarn:
+  #encoded hadoop configuration files for yarn
   provided.zip: ${hadoop.provided.zip:{}}
+store:
+  #optional parameter to configure zookeeper-store
+  path: ${broker.store.znode:/broker/yarn/metadata}
 cf:
   #name of service in cloud foundry catalog
   servicename: ${cf.catalog.servicename:yarn}
@@ -11,4 +15,5 @@ cf:
   #id of base plan in cloud foundry catalog
   baseId: ${BASE_GUID:}
 metadata:
+  #encoded image file viewed in marketplace
   imageUrl: ${IMAGE_URL:}

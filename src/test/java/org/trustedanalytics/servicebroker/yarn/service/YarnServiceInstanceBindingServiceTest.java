@@ -16,58 +16,65 @@
 
 package org.trustedanalytics.servicebroker.yarn.service;
 
-import com.google.common.collect.ImmutableMap;
-import org.trustedanalytics.hadoop.HadoopConfigurationHelper;
-import org.trustedanalytics.hadoop.config.ConfigConstants;
-import org.trustedanalytics.servicebroker.yarn.config.ExternalConfiguration;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
-import org.cloudfoundry.community.servicebroker.model.*;
+import java.util.Collections;
+
+import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
+import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
+import org.cloudfoundry.community.servicebroker.model.ServiceInstanceBinding;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.trustedanalytics.servicebroker.yarn.config.ExternalConfiguration;
 
-import java.util.Collections;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class YarnServiceInstanceBindingServiceTest {
 
-    @Mock
-    private ExternalConfiguration configuration;
+  private static final String HADOOP_CONFIG_KEY_VALUE = "HADOOP_CONFIG_KEY";
 
-    @Mock
-    private ServiceInstanceBindingService instanceBindingService;
+  @Mock
+  private ExternalConfiguration configuration;
 
-    private YarnServiceInstanceBindingService service;
+  @Mock
+  private ServiceInstanceBindingService instanceBindingService;
 
-    @Before
-    public void init() {
-        service = new YarnServiceInstanceBindingService(instanceBindingService, ImmutableMap
-                .of(ConfigConstants.HADOOP_CONFIG_KEY_VALUE, "{}"), configuration);
-    }
+  private YarnServiceInstanceBindingService service;
 
-    @Test
-    public void testCreateServiceInstance() throws Exception {
-        CreateServiceInstanceBindingRequest request = new CreateServiceInstanceBindingRequest(
-                getServiceInstance("serviceId").getServiceDefinitionId(), "planId", "appGuid").
-                withBindingId("bindingId").withServiceInstanceId("serviceId");
-        when(instanceBindingService.createServiceInstanceBinding(request)).thenReturn(getServiceInstanceBinding("id"));
-        ServiceInstanceBinding instance = service.createServiceInstanceBinding(request);
+  @Before
+  public void init() {
+    service =
+        new YarnServiceInstanceBindingService(instanceBindingService, ImmutableMap.of(
+            HADOOP_CONFIG_KEY_VALUE, "{}"), configuration);
+  }
 
-        assertThat(instance.getCredentials().get(ConfigConstants.HADOOP_CONFIG_KEY_VALUE), equalTo("{}"));
-    }
+  @Test
+  public void testCreateServiceInstance() throws Exception {
+    CreateServiceInstanceBindingRequest request =
+        new CreateServiceInstanceBindingRequest(getServiceInstance("serviceId")
+            .getServiceDefinitionId(), "planId", "appGuid").withBindingId("bindingId")
+            .withServiceInstanceId("serviceId");
+    when(instanceBindingService.createServiceInstanceBinding(request)).thenReturn(
+        getServiceInstanceBinding("id"));
+    ServiceInstanceBinding instance = service.createServiceInstanceBinding(request);
 
-    private ServiceInstanceBinding getServiceInstanceBinding(String id) {
-        return new ServiceInstanceBinding(id, "serviceId", Collections.emptyMap(), null, "guid");
-    }
+    assertThat(instance.getCredentials().get(HADOOP_CONFIG_KEY_VALUE), equalTo("{}"));
+  }
 
-    private ServiceInstance getServiceInstance(String id) {
-        return new ServiceInstance(new CreateServiceInstanceRequest(id, "planId", "organizationGuid", "spaceGuid"));
-    }
+  private ServiceInstanceBinding getServiceInstanceBinding(String id) {
+    return new ServiceInstanceBinding(id, "serviceId", Collections.emptyMap(), null, "guid");
+  }
+
+  private ServiceInstance getServiceInstance(String id) {
+    return new ServiceInstance(new CreateServiceInstanceRequest(id, "planId", "organizationGuid",
+        "spaceGuid"));
+  }
 }

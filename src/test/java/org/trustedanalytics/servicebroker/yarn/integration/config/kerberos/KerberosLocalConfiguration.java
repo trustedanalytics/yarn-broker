@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.servicebroker.yarn.service;
+package org.trustedanalytics.servicebroker.yarn.integration.config.kerberos;
 
-import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
-import org.trustedanalytics.cfbroker.store.impl.ForwardingServiceInstanceServiceStore;
+import java.io.IOException;
 
-public class YarnServiceInstanceService extends ForwardingServiceInstanceServiceStore {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.trustedanalytics.servicebroker.yarn.config.kerberos.KerberosProperties;
 
-  public YarnServiceInstanceService(ServiceInstanceService delegate) {
-    super(delegate);
+@Configuration
+public class KerberosLocalConfiguration {
+
+  @Bean
+  @Profile("integration-test")
+  public KerberosProperties getKerberosProperties() throws IOException {
+    return new KerberosProperties("kdc", "realm", "test", "test");
   }
 }

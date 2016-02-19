@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.servicebroker.yarn.service;
 
-import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
-import org.trustedanalytics.cfbroker.store.impl.ForwardingServiceInstanceServiceStore;
+package org.trustedanalytics.servicebroker.yarn.config;
 
-public class YarnServiceInstanceService extends ForwardingServiceInstanceServiceStore {
+public final class Profiles {
+  public static final String CLOUD = "cloud";
 
-  public YarnServiceInstanceService(ServiceInstanceService delegate) {
-    super(delegate);
-  }
+  private Profiles() {}
 }
