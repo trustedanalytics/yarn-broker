@@ -17,21 +17,17 @@
 package org.trustedanalytics.servicebroker.yarn.config;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.security.auth.login.LoginException;
 
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.trustedanalytics.cfbroker.config.HadoopZipConfiguration;
-import org.trustedanalytics.cfbroker.store.api.BrokerStore;
-import org.trustedanalytics.cfbroker.store.impl.ServiceInstanceBindingServiceStore;
-import org.trustedanalytics.servicebroker.yarn.config.kerberos.KerberosProperties;
-import org.trustedanalytics.servicebroker.yarn.service.YarnServiceInstanceBindingService;
+import org.trustedanalytics.servicebroker.framework.Credentials;
+import org.trustedanalytics.servicebroker.framework.kerberos.KerberosProperties;
+
+import com.google.common.collect.ImmutableMap;
 
 @Configuration
 public class ServiceInstanceBindingServiceConfig {
@@ -42,21 +38,19 @@ public class ServiceInstanceBindingServiceConfig {
   @Autowired
   private KerberosProperties kerberosProperties;
 
-  @Autowired
-  @Qualifier(value = Qualifiers.SERVICE_INSTANCE_BINDING)
-  private BrokerStore<CreateServiceInstanceBindingRequest> store;
-
   @Bean
-  public ServiceInstanceBindingService getServiceInstanceBindingService() throws IOException,
-      LoginException {
-
-    return new YarnServiceInstanceBindingService(new ServiceInstanceBindingServiceStore(store),
-        getCredentials(), configuration);
-  }
-
-  private Map<String, Object> getCredentials() throws IOException {
+  public Credentials getCredentials() throws IOException {
     HadoopZipConfiguration hadoopZipConfiguration =
         HadoopZipConfiguration.createHadoopZipConfiguration(configuration.getYarnProvidedZip());
-    return hadoopZipConfiguration.getBrokerCredentials();
+
+    ImmutableMap.Builder<String, Object> credentialsBuilder =
+        new ImmutableMap.Builder<String, Object>().putAll(hadoopZipConfiguration
+            .getBrokerCredentials());
+
+    if (kerberosProperties.isKerberosEnabled()) {
+      credentialsBuilder.put("kerberos", kerberosProperties.getCredentials());
+    }
+
+    return new Credentials(credentialsBuilder.build());
   }
 }

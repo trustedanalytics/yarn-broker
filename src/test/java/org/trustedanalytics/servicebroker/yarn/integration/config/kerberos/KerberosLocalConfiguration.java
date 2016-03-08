@@ -20,7 +20,7 @@ import java.io.IOException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.servicebroker.yarn.config.kerberos.KerberosProperties;
+import org.trustedanalytics.servicebroker.framework.kerberos.KerberosProperties;
 
 @Configuration
 public class KerberosLocalConfiguration {
@@ -28,6 +28,6 @@ public class KerberosLocalConfiguration {
   @Bean
   @Profile("integration-test")
   public KerberosProperties getKerberosProperties() throws IOException {
-    return new KerberosProperties("kdc", "realm", "test", "test");
+    return new KerberosProperties("kdc", "realm", "test", false);
   }
 }

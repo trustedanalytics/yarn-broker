@@ -1,12 +1,26 @@
+---
 security:
-  user.password: fake
+#password cf client will use when interacting with broker
+  user.password: ${user.password}
 yarn:
-  provided.zip: ${hadoop.provided.zip:{}}
+  #encoded hadoop configuration files for yarn
+  provided.zip: ${hadoop.provided.zip:}
 store:
-  path: ${broker.store.znode:/broker/yarn}
+  #optional parameter to configure zookeeper-store
+  path: ${broker.store.znode:/broker/yarn/metadata}
+  user: ${system.user:test}
+  password: ${system.user.password:test1}
 cf:
-  servicename: yarn
-  serviceid: yarn
-  baseId: ${BASE_GUID:}
-metadata:
-  imageUrl: ${IMAGE_URL:}
+  catalog:
+    serviceName: ${cf.catalog.servicename:yarn}
+    serviceId: ${cf.catalog.serviceid:yarn}
+    serviceDescription: "YARN service allow to access resources on hadoop cluster."
+    baseId: ${BASE_GUID:fake}
+    plans:
+      - id: bare-plan
+        name: bare
+        description: bare
+        free: true
+    metadata:
+      imageUrl: ${IMAGE_URL:}
+

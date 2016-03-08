@@ -24,60 +24,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExternalConfiguration {
 
-  @Value("${metadata.imageUrl}")
+  @Value("${store.user}")
   @NotNull
-  private String imageUrl;
+  private String user;
 
-  @Value("${store.path}")
+  @Value("${store.password}")
   @NotNull
-  private String brokerStorePath;
+  private String password;
 
-  @Value("${cf.serviceid}")
-  @NotNull
-  private String cfServiceId;
-
-  @Value("${cf.servicename}")
-  @NotNull
-  private String cfServiceName;
+  public String getUser() {
+    return user;
+  }
 
   @Value("${yarn.provided.zip}")
   private String yarnProvidedZip;
-
-  @Value("${cf.baseId}")
-  @NotNull
-  private String cfBaseId;
-
-  public String getCfServiceName() {
-    return cfServiceName;
-  }
-
-  public void setCfServiceName(String cfServiceName) {
-    this.cfServiceName = cfServiceName;
-  }
-
-  public String getCfServiceId() {
-    return cfServiceId;
-  }
-
-  public void setCfServiceId(String cfServiceId) {
-    this.cfServiceId = cfServiceId;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-  }
-
-  public String getCfBaseId() {
-    return cfBaseId;
-  }
-
-  public void setCfBaseId(String cfBaseId) {
-    this.cfBaseId = cfBaseId;
-  }
 
   public String getYarnProvidedZip() {
     return yarnProvidedZip;
@@ -87,11 +47,4 @@ public class ExternalConfiguration {
     this.yarnProvidedZip = yarnProvidedZip;
   }
 
-  public String getBrokerStorePath() {
-    return brokerStorePath;
-  }
-
-  public void setBrokerStorePath(String brokerStorePath) {
-    this.brokerStorePath = brokerStorePath;
-  }
 }

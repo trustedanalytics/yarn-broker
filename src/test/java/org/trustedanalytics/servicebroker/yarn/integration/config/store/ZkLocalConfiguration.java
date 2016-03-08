@@ -19,38 +19,50 @@ import java.io.IOException;
 
 import org.apache.curator.test.TestingServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClientBuilder;
+import org.trustedanalytics.servicebroker.framework.Qualifiers;
+import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperCredentials;
+import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperTestOperations;
 import org.trustedanalytics.servicebroker.yarn.config.ExternalConfiguration;
+
+import javax.validation.constraints.NotNull;
 
 @Configuration
 public class ZkLocalConfiguration {
-  private final String USER = "cf";
-  private final String PASSWORD = "cf1";
 
-  @Autowired
-  private ExternalConfiguration conf;
+  @Value("${store.user}")
+  @NotNull
+  private String user;
+
+  @Value("${store.password}")
+  @NotNull
+  private String password;
+
+  @Value("${store.path}")
+  @NotNull
+  private String brokerStoreNode;
 
   @Bean
   public TestingServer initEmbededZKServer() throws Exception {
     TestingServer zkServer = new TestingServer();
     zkServer.start();
-
-    ZkStoreTestUtils.ZookeeperCredentials credendials =
-        new ZkStoreTestUtils.ZookeeperCredentials(zkServer.getConnectString(), USER, PASSWORD);
-    ZkStoreTestUtils.createDir(credendials, conf.getBrokerStorePath());
+    ZooKeeperCredentials credendials = new ZooKeeperCredentials(zkServer.getConnectString(), user, password);
+    ZooKeeperTestOperations.createSecuredNode(credendials, brokerStoreNode);
     return zkServer;
   }
 
   @Bean(initMethod = "init", destroyMethod = "destroy")
+  @Qualifier(Qualifiers.BROKER_STORE)
   @Profile("integration-test")
   public ZookeeperClient getZkClient(TestingServer zkServer) throws IOException {
     ZookeeperClient client =
-        new ZookeeperClientBuilder(zkServer.getConnectString(), USER, PASSWORD,
-            conf.getBrokerStorePath()).build();
+        new ZookeeperClientBuilder(zkServer.getConnectString(), user, password, brokerStoreNode).build();
     return client;
   }
 }

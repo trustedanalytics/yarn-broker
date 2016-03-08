@@ -75,21 +75,23 @@ public class YarnBrokerIntegrationTest {
 
   @Test
   public void testCreateInstanceBinding_success_shouldReturnBinding() throws Exception {
-    CreateServiceInstanceBindingRequest request =
-        new CreateServiceInstanceBindingRequest(getServiceInstance("serviceId4")
-            .getServiceDefinitionId(), "planId", "appGuid").withBindingId("bindingId")
-            .withServiceInstanceId("serviceId");
-    ServiceInstanceBinding binding = instanceBindingService.createServiceInstanceBinding(request);
-    assertThat(binding.getServiceInstanceId(), equalTo("serviceId"));
+    CreateServiceInstanceRequest request = getCreateInstanceRequest("instanceId4");
+    instanceService.createServiceInstance(request);
+    CreateServiceInstanceBindingRequest bindingRequest =
+        new CreateServiceInstanceBindingRequest(getServiceInstance("instanceId4")
+            .getServiceDefinitionId(), "fake-bare-plan", "appGuid").withBindingId("bindingId")
+            .withServiceInstanceId("instanceId4");
+    ServiceInstanceBinding binding = instanceBindingService.createServiceInstanceBinding(bindingRequest);
+    assertThat(binding.getServiceInstanceId(), equalTo("instanceId4"));
   }
 
   private ServiceInstance getServiceInstance(String id) {
-    return new ServiceInstance(new CreateServiceInstanceRequest(id, "planId", "organizationGuid",
+    return new ServiceInstance(new CreateServiceInstanceRequest(id, "fake-bare-plan", "organizationGuid",
         "spaceGuid"));
   }
 
   private CreateServiceInstanceRequest getCreateInstanceRequest(String serviceId) {
-    return new CreateServiceInstanceRequest("serviceDefinitionId", "planId", "organizationGuid",
+    return new CreateServiceInstanceRequest("serviceDefinitionId", "fake-bare-plan", "organizationGuid",
         "spaceGuid").withServiceInstanceId(serviceId);
   }
 }
