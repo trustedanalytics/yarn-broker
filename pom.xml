@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>yarn-broker</artifactId>
 
-    <version>0.8.0</version>
+    <version>0.8.1</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
         <artifactId>spring-project-template</artifactId>
-        <version>0.4.3</version>
+        <version>0.4.9</version>
     </parent>
 
     <properties>
@@ -118,11 +118,6 @@
             <version>0.5.8</version>
         </dependency>
         <dependency>
-            <groupId>org.trustedanalytics.servicebroker.repository</groupId>
-            <artifactId>zookeeper-broker-store</artifactId>
-            <version>0.5.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -165,7 +160,7 @@
         <dependency>
             <groupId>org.trustedanalytics</groupId>
             <artifactId>broker-test-lib</artifactId>
-            <version>0.4.0</version>
+            <version>0.4.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
