@@ -21,6 +21,10 @@ cf:
         name: bare
         description: bare
         free: true
+      - id: multitenant-plan
+        name: multitenant
+        description: multitenant
+        free: true
     metadata:
       imageUrl: ${IMAGE_URL:}
 

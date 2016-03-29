@@ -23,21 +23,21 @@ import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinition;
+import org.trustedanalytics.servicebroker.yarn.plans.binding.YarnBareBindingOperations;
 import org.trustedanalytics.servicebroker.yarn.plans.binding.YarnBindingClient;
 
-@Component("bare")
-class YarnPlanBare implements ServicePlanDefinition {
+@Component("multitenant")
+class YarnPlanMultitenant implements ServicePlanDefinition {
 
   private YarnBindingClient bindingOperations;
 
   @Autowired
-  public YarnPlanBare(YarnBindingClient bindingOperations) {
+  public YarnPlanMultitenant(YarnBindingClient bindingOperations) {
     this.bindingOperations = bindingOperations;
   }
 
   @Override
   public Map<String, Object> bind(ServiceInstance serviceInstance) throws ServiceBrokerException {
-    UUID orgId = UUID.fromString(serviceInstance.getOrganizationGuid());
-    return bindingOperations.createCredentialsMap(orgId);
+    return bindingOperations.createCredentialsMap();
   }
 }

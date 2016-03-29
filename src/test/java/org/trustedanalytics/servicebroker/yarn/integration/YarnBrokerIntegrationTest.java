@@ -19,7 +19,11 @@ package org.trustedanalytics.servicebroker.yarn.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-import org.cloudfoundry.community.servicebroker.model.*;
+import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
+import org.cloudfoundry.community.servicebroker.model.DeleteServiceInstanceRequest;
+import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
+import org.cloudfoundry.community.servicebroker.model.ServiceInstanceBinding;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
 import org.junit.Rule;
@@ -86,12 +90,12 @@ public class YarnBrokerIntegrationTest {
   }
 
   private ServiceInstance getServiceInstance(String id) {
-    return new ServiceInstance(new CreateServiceInstanceRequest(id, "fake-bare-plan", "organizationGuid",
-        "spaceGuid"));
+    return new ServiceInstance(new CreateServiceInstanceRequest(id, "fake-bare-plan",
+        "f0487d90-fde6-4da1-a933-03f38776115d", "spaceGuid"));
   }
 
   private CreateServiceInstanceRequest getCreateInstanceRequest(String serviceId) {
-    return new CreateServiceInstanceRequest("serviceDefinitionId", "fake-bare-plan", "organizationGuid",
-        "spaceGuid").withServiceInstanceId(serviceId);
+    return new CreateServiceInstanceRequest("serviceDefinitionId", "fake-bare-plan",
+        "f0487d90-fde6-4da1-a933-03f38776115d", "spaceGuid").withServiceInstanceId(serviceId);
   }
 }
