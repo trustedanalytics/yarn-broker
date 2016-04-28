@@ -32,12 +32,12 @@ public class ExternalConfiguration {
   @NotNull
   private String password;
 
+  @Value("${yarn.provided.zip}")
+  private String yarnProvidedZip;
+
   public String getUser() {
     return user;
   }
-
-  @Value("${yarn.provided.zip}")
-  private String yarnProvidedZip;
 
   public String getYarnProvidedZip() {
     return yarnProvidedZip;

@@ -16,14 +16,12 @@
 package org.trustedanalytics.servicebroker.yarn.plans;
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinition;
-import org.trustedanalytics.servicebroker.yarn.plans.binding.YarnBareBindingOperations;
 import org.trustedanalytics.servicebroker.yarn.plans.binding.YarnBindingClient;
 
 @Component("multitenant")
