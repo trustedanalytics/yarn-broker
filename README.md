@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/trustedanalytics/yarn-broker.svg?branch=master)](https://travis-ci.org/trustedanalytics/yarn-broker)
+[![Dependency Status](https://www.versioneye.com/user/projects/5729c2daa0ca350034be6849/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5729c2daa0ca350034be6849)
+
 # yarn-broker
 
 Cloud foundry broker for YARN.
